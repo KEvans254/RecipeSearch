@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Recipe Search</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Recipe Search</h1>
+		<div class="search-container">
+			<input type="text" id="query" placeholder="Search for recipes...">
+			<button id="search-btn">Search</button>
+			<div id="error-message"></div>
+			<div id="filters">
+				<label>Include Ingredients:</label>
+				<input type="text" id="includeIngredients" placeholder="e.g. chicken, rice">
+				<label>Exclude Ingredients:</label>
+				<input type="text" id="excludeIngredients" placeholder="e.g. dairy, nuts">
+				<label>Diet:</label>
+				<select id="diet">
+					<option value="">Any</option>
+					<option value="balanced">Balanced</option>
+					<option value="high-protein">High Protein</option>
+					<option value="low-fat">Low Fat</option>
+					<option value="low-carb">Low Carb</option>
+				</select>
+				<label>Cuisine Type:</label>
+				<input type="text" id="cuisineType" placeholder="e.g. italian, mexican">
+			</div>
+		</div>
+		<div class="results-container">
+			<ul id="results"></ul>
+			<div id="pagination"></div>
+		</div>
+	</div>
+	<script src="script.js"></script>
+</body>
+</html>
