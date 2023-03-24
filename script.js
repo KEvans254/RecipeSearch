@@ -66,7 +66,7 @@ function displayResults(hits) {
       img.src = image;
 
       const div = document.createElement('div');
-      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? ingredients.length : 'Unknown'} ingredients</p>`;
+      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? (ingredients.length || 'Unknown') : 'Unknown'} ingredients</p>`;
 
       li.appendChild(img);
       li.appendChild(div);
