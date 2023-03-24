@@ -48,27 +48,50 @@ function displayResults(hits) {
     const errorMessage = 'No results found. Please try another search.';
     displayError(errorMessage);
   } else {
-    hits.forEach(hit => {
-      const { recipe } = hit;
-        // Add an additional check for undefined `recipe`
-      if (!recipe) {
-        return;
-      }
-      const { label, image, url, ingredients } = recipe;
+    // Pagination
+    const itemsPerPage = 10;
+    const totalPages = Math.ceil(hits.length / itemsPerPage);
+    const paginationDiv = document.getElementById('pagination');
+    paginationDiv.innerHTML = '';
 
-      const li = document.createElement('li');
-      const img = document.createElement('img');
-      img.src = image;
+    for (let i = 1; i <= totalPages; i++) {
+      const button = document.createElement('button');
+      button.innerText = i;
+      button.addEventListener('click', () => {
+        displayPage(hits, i, itemsPerPage);
+      });
+      paginationDiv.appendChild(button);
+    }
 
-      const div = document.createElement('div');
-      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? ingredients.length : 'Unknown'} ingredients</p>`;
-
-      li.appendChild(img);
-      li.appendChild(div);
-
-      results.appendChild(li);
-    });
+    displayPage(hits, 1, itemsPerPage);
   }
+}
+
+function displayPage(hits, currentPage, itemsPerPage) {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const pageHits = hits.slice(startIndex, endIndex);
+
+  pageHits.forEach(hit => {
+    const { recipe } = hit;
+    // Add an additional check for undefined `recipe`
+    if (!recipe) {
+      return;
+    }
+    const { label, image, url, ingredients } = recipe;
+
+    const li = document.createElement('li');
+    const img = document.createElement('img');
+    img.src = image;
+
+    const div = document.createElement('div');
+    div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? ingredients.length : 'Unknown'} ingredients</p>`;
+
+    li.appendChild(img);
+    li.appendChild(div);
+
+    document.getElementById('results').appendChild(li);
+  });
 }
 
 function displayError(errorMessage) {
