@@ -15,7 +15,7 @@ loadMoreBtn.addEventListener('click', loadMoreResults);
 
 function searchRecipes() {
   const query = document.getElementById('query').value;
-  const excludeIngredients = document.getElementById('excludeIngredients').value;
+  const excludeIngredients = document.getElementById('excludeIngredients').value.trim(); // remove leading/trailing whitespace
   const diet = document.getElementById('diet').value;
   const cuisineType = document.getElementById('cuisineType').value;
 
@@ -29,9 +29,15 @@ function searchRecipes() {
     return;
   }
 
+  // Validate excludeIngredients input
+  if (excludeIngredients && !/^[A-Za-z ]+$/.test(excludeIngredients)) {
+    displayError('Exclude ingredients should only contain letters and spaces');
+    return;
+  }
+
   let apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
 
-  if (excludeIngredients && excludeIngredients.trim() !== '') { // check if excludeIngredients is not empty or undefined
+  if (excludeIngredients) {
     apiUrl += `&excluded=${excludeIngredients}`;
   }
 
@@ -48,6 +54,7 @@ function searchRecipes() {
 
   fetchResults(apiUrl);
 }
+
 
 function fetchResults(apiUrl) {
   fetch(apiUrl)
