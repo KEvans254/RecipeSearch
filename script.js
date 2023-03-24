@@ -1,7 +1,7 @@
 const appId = '7cc1191d';
 const appKey = '408b5ba93e0d384e5fd58fcbcd65f649';
 
-const searchBtn = document.getElementById('search-btn');
+const searchBtn = document.getElementById('search-button');
 searchBtn.addEventListener('click', searchRecipes);
 
 let currentPage = 0;
