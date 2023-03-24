@@ -5,18 +5,19 @@ const searchBtn = document.getElementById('search-btn');
 searchBtn.addEventListener('click', searchRecipes);
 
 function searchRecipes() {
-  const query = document.getElementById('query').value.trim();
+  const query = document.getElementById('query').value;
+  const includeIngredients = document.getElementById('includeIngredients').value;
+  const excludeIngredients = document.getElementById('excludeIngredients').value;
+  const diet = document.getElementById('diet').value;
+  const cuisineType = document.getElementById('cuisineType').value;
+
+  // Check if required fields are filled
   if (!query) {
-    displayError('Please enter a search query.');
+    displayError('Please enter a search query');
     return;
   }
 
-  const includeIngredients = document.getElementById('includeIngredients').value.trim();
-  const excludeIngredients = document.getElementById('excludeIngredients').value.trim();
-  const diet = document.getElementById('diet').value.trim();
-  const cuisineType = document.getElementById('cuisineType').value.trim();
-
-  let apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
+  const apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
 
   if (includeIngredients) {
     apiUrl += `&ingr=${includeIngredients}`;
@@ -40,7 +41,6 @@ function searchRecipes() {
     .catch(error => displayError(error));
 }
 
-
 function displayResults(hits) {
   const results = document.getElementById('results');
   results.innerHTML = '';
@@ -58,7 +58,7 @@ function displayResults(hits) {
       img.src = image;
 
       const div = document.createElement('div');
-      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients.length} ingredients</p>`;
+      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients?.length || 0} ingredients</p>`;
 
       li.appendChild(img);
       li.appendChild(div);
