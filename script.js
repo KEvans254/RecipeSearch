@@ -6,7 +6,6 @@ searchBtn.addEventListener('click', searchRecipes);
 
 function searchRecipes() {
   const query = document.getElementById('query').value;
-  const includeIngredients = document.getElementById('includeIngredients').value;
   const excludeIngredients = document.getElementById('excludeIngredients').value;
   const diet = document.getElementById('diet').value;
   const cuisineType = document.getElementById('cuisineType').value;
@@ -22,10 +21,6 @@ function searchRecipes() {
   }
 
   let apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
-
-  if (includeIngredients && includeIngredients.trim() !== '') { // check if includeIngredients is not empty or undefined
-    apiUrl += `&ingr=${includeIngredients}`;
-  }
 
   if (excludeIngredients && excludeIngredients.trim() !== '') { // check if excludeIngredients is not empty or undefined
     apiUrl += `&excluded=${excludeIngredients}`;
@@ -65,18 +60,4 @@ function displayResults(hits) {
       const img = document.createElement('img');
       img.src = image;
 
-      const div = document.createElement('div');
-      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? (ingredients.length || 'Unknown') : 'Unknown'} ingredients</p>`;
-
-      li.appendChild(img);
-      li.appendChild(div);
-
-      results.appendChild(li);
-    });
-  }
-}
-
-function displayError(errorMessage) {
-  const errorDiv = document.getElementById('error-message');
-  errorDiv.innerHTML = errorMessage;
-}
+      const div =
