@@ -4,6 +4,15 @@ const appKey = '408b5ba93e0d384e5fd58fcbcd65f649';
 const searchBtn = document.getElementById('search-btn');
 searchBtn.addEventListener('click', searchRecipes);
 
+let currentPage = 0;
+const resultsPerPage = 10;
+let currentResults = [];
+
+const resultsList = document.getElementById('results');
+const loadMoreBtn = document.getElementById('load-more');
+
+loadMoreBtn.addEventListener('click', loadMoreResults);
+
 function searchRecipes() {
   const query = document.getElementById('query').value;
   const excludeIngredients = document.getElementById('excludeIngredients').value;
@@ -34,50 +43,47 @@ function searchRecipes() {
     apiUrl += `&cuisineType=${cuisineType}`;
   }
 
+  currentPage = 0;
+  currentResults = [];
+
+  fetchResults(apiUrl);
+}
+
+function fetchResults(apiUrl) {
   fetch(apiUrl)
     .then(response => response.json())
-    .then(data => displayResults(data.hits))
+    .then(data => {
+      currentResults = data.hits;
+      displayResults(currentResults.slice(0, resultsPerPage));
+      if (currentResults.length > resultsPerPage) {
+        loadMoreBtn.style.display = 'block';
+      } else {
+        loadMoreBtn.style.display = 'none';
+      }
+    })
     .catch(error => displayError(error));
 }
 
-function displayResults(hits) {
-  const results = document.getElementById('results');
-  results.innerHTML = '';
-
-  if (hits.length === 0) {
-    const errorMessage = 'No results found. Please try another search.';
-    displayError(errorMessage);
-  } else {
-    // Pagination
-    const itemsPerPage = 10;
-    const totalPages = Math.ceil(hits.length / itemsPerPage);
-    const paginationDiv = document.getElementById('pagination');
-    paginationDiv.innerHTML = '';
-
-    for (let i = 1; i <= totalPages; i++) {
-      const button = document.createElement('button');
-      button.innerText = i;
-      button.addEventListener('click', () => {
-        displayPage(hits, i, itemsPerPage);
-      });
-      paginationDiv.appendChild(button);
-    }
-
-    displayPage(hits, 1, itemsPerPage);
-  }
+function loadMoreResults() {
+  currentPage++;
+  const startIndex = currentPage * resultsPerPage;
+  const endIndex = (currentPage + 1) * resultsPerPage;
+  const nextResults = currentResults.slice(startIndex, endIndex);
+  displayResults(nextResults);
 }
 
-function displayPage(hits, currentPage, itemsPerPage) {
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const pageHits = hits.slice(startIndex, endIndex);
+function displayResults(results) {
+  if (currentPage === 0) {
+    resultsList.innerHTML = '';
+  }
 
-  pageHits.forEach(hit => {
-    const { recipe } = hit;
+  results.forEach(result => {
+    const { recipe } = result;
     // Add an additional check for undefined `recipe`
     if (!recipe) {
       return;
     }
+
     const { label, image, url, ingredients } = recipe;
 
     const li = document.createElement('li');
@@ -90,11 +96,13 @@ function displayPage(hits, currentPage, itemsPerPage) {
     li.appendChild(img);
     li.appendChild(div);
 
-    document.getElementById('results').appendChild(li);
+    resultsList.appendChild(li);
   });
 }
 
 function displayError(errorMessage) {
   const errorDiv = document.getElementById('error-message');
   errorDiv.innerHTML = errorMessage;
+  resultsList.innerHTML = '';
+  loadMoreBtn.style.display = 'none';
 }
