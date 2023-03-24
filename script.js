@@ -55,6 +55,10 @@ function displayResults(hits) {
   } else {
     hits.forEach(hit => {
       const { recipe } = hit;
+        // Add an additional check for undefined `recipe`
+      if (!recipe) {
+        return;
+      }
       const { label, image, url, ingredients } = recipe;
 
       const li = document.createElement('li');
