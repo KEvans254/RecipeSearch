@@ -5,11 +5,16 @@ const searchBtn = document.getElementById('search-btn');
 searchBtn.addEventListener('click', searchRecipes);
 
 function searchRecipes() {
-  const query = document.getElementById('query').value;
-  const includeIngredients = document.getElementById('includeIngredients').value;
-  const excludeIngredients = document.getElementById('excludeIngredients').value;
-  const diet = document.getElementById('diet').value;
-  const cuisineType = document.getElementById('cuisineType').value;
+  const query = document.getElementById('query').value.trim();
+  if (!query) {
+    displayError('Please enter a search query.');
+    return;
+  }
+
+  const includeIngredients = document.getElementById('includeIngredients').value.trim();
+  const excludeIngredients = document.getElementById('excludeIngredients').value.trim();
+  const diet = document.getElementById('diet').value.trim();
+  const cuisineType = document.getElementById('cuisineType').value.trim();
 
   let apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
 
@@ -34,6 +39,7 @@ function searchRecipes() {
     .then(data => displayResults(data.hits))
     .catch(error => displayError(error));
 }
+
 
 function displayResults(hits) {
   const results = document.getElementById('results');
