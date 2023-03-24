@@ -115,29 +115,28 @@ function displayResults(results) {
 
     const h3 = document.createElement('h3');
     const a = document.createElement('a');
-    a.href = ${url};
+    a.href = url; // corrected
     a.target = '_blank';
     a.innerText = label;
     const ul = document.createElement('ul');
-ingredients.forEach(ingredient => {
-  const li = document.createElement('li');
-  li.innerText = ingredient.text;
-  ul.appendChild(li);
-});
-
-li.appendChild(img);
-li.appendChild(h3);
-h3.appendChild(a);
-li.appendChild(ul);
-
-resultsList.appendChild(li);
-
+    ingredients.forEach(ingredient => {
+      const li = document.createElement('li');
+      li.innerText = ingredient.text;
+      ul.appendChild(li);
     });
+
+    li.appendChild(img);
+    li.appendChild(h3);
+    h3.appendChild(a);
+    li.appendChild(ul);
+
+    resultsList.appendChild(li);
+  });
 }
 
 function displayError(message) {
-const errorDiv = document.getElementById('error-message');
-errorDiv.innerHTML = message;
-resultsList.innerHTML = '';
-loadMoreBtn.style.display = 'none';
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.innerHTML = message;
+    resultsList.innerHTML = '';
+    loadMoreBtn.style.display = 'none';
 }
