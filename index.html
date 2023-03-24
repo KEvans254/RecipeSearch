@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Recipe Search</title>
-	<link rel="stylesheet" href="style.css">
-</head>
-<body>
-	<div class="container">
-		<h1>Recipe Search</h1>
-		<div class="search-container">
-			<input type="text" id="query" placeholder="Search for recipes...">
-			<button id="search-btn">Search</button>
-			<div id="error-message"></div>
-			<div id="filters">
-				<label>Exclude Ingredients:</label>
-				<input type="text" id="excludeIngredients" placeholder="e.g. dairy, nuts">
-				<label>Diet:</label>
-				<select id="diet">
-					<option value="">Any</option>
-					<option value="balanced">Balanced</option>
-					<option value="high-protein">High Protein</option>
-					<option value="low-fat">Low Fat</option>
-					<option value="low-carb">Low Carb</option>
-				</select>
-				<label for="cuisineType">Cuisine Type:</label>
-      <select id="cuisineType">
-        <option value="">Any</option>
-        <option value="american">American</option>
-        <option value="chinese">Chinese</option>
-        <option value="french">French</option>
-        <option value="indian">Indian</option>
-        <option value="italian">Italian</option>
-        <option value="japanese">Japanese</option>
-        <option value="mexican">Mexican</option>
-        <option value="middle-eastern">Middle Eastern</option>
-      </select>
-			</div>
-		</div>
-		<div class="results-container">
-			<ul id="results"></ul>
-			<div id="pagination"></div>
-		</div>
-	</div>
-	<script src="script.js"></script>
-</body>
+  <head>
+    <title>Recipe Search</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Recipe Search</h1>
+      <div class="search-container">
+        <input type="text" id="query" placeholder="Search for recipes..." />
+        <button id="search-btn">Search</button>
+        <div id="error-message"></div>
+        <div id="filters">
+          <label for="excludeIngredients">Exclude Ingredients:</label>
+          <input type="text" id="excludeIngredients" placeholder="e.g. dairy, nuts" />
+          <label for="diet">Diet:</label>
+          <select id="diet">
+            <option value="">Any</option>
+            <option value="balanced">Balanced</option>
+            <option value="high-protein">High Protein</option>
+            <option value="low-fat">Low Fat</option>
+            <option value="low-carb">Low Carb</option>
+          </select>
+          <label for="cuisineType">Cuisine Type:</label>
+          <select id="cuisineType">
+            <option value="">Any</option>
+            <option value="american">American</option>
+            <option value="chinese">Chinese</option>
+            <option value="french">French</option>
+            <option value="indian">Indian</option>
+            <option value="italian">Italian</option>
+            <option value="japanese">Japanese</option>
+            <option value="mexican">Mexican</option>
+            <option value="middle-eastern">Middle Eastern</option>
+          </select>
+        </div>
+      </div>
+      <div class="results-container">
+        <ul id="results"></ul>
+        <div id="pagination"></div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
