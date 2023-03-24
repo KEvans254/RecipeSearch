@@ -23,11 +23,11 @@ function searchRecipes() {
 
   let apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
 
-  if (includeIngredients) {
+  if (includeIngredients && includeIngredients.trim() !== '') { // check if includeIngredients is not empty or undefined
     apiUrl += `&ingr=${includeIngredients}`;
   }
 
-  if (excludeIngredients) {
+  if (excludeIngredients && excludeIngredients.trim() !== '') { // check if excludeIngredients is not empty or undefined
     apiUrl += `&excluded=${excludeIngredients}`;
   }
 
