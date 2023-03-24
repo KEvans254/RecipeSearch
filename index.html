@@ -7,7 +7,7 @@
   <body>
     <div class="container">
       <h1>Recipe Search</h1>
-      <div class="search-container">
+      <div class="search-form">
         <input type="text" id="query" placeholder="Search for recipes..." />
         <button id="search-btn">Search</button>
         <div id="error-message"></div>
@@ -31,14 +31,16 @@
             <option value="indian">Indian</option>
             <option value="italian">Italian</option>
             <option value="japanese">Japanese</option>
+            <option value="mediterranean">Mediterranean</option>
             <option value="mexican">Mexican</option>
-            <option value="middle-eastern">Middle Eastern</option>
+            <option value="middle eastern">Middle Eastern</option>
+            <option value="thai">Thai</option>
           </select>
         </div>
       </div>
       <div class="results-container">
-        <ul id="results"></ul>
-        <div id="pagination"></div>
+        <ul class="results-list"></ul>
+        <div class="pagination"></div>
       </div>
     </div>
     <script src="script.js"></script>
