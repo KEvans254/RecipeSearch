@@ -14,8 +14,8 @@ const loadMoreBtn = document.getElementById('load-more');
 loadMoreBtn.addEventListener('click', loadMoreResults);
 
 function searchRecipes() {
-  const query = document.getElementById('query').value;
-  const excludeIngredients = document.getElementById('excludeIngredients').value.trim(); // remove leading/trailing whitespace
+  const query = document.getElementById('query').value.trim(); // remove leading/trailing whitespace
+  const excludeIngredients = document.getElementById('excludeIngredients').value.trim();
   const diet = document.getElementById('diet').value;
   const cuisineType = document.getElementById('cuisineType').value;
 
@@ -35,6 +35,7 @@ function searchRecipes() {
     return;
   }
 
+  // Build API URL
   let apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
 
   if (excludeIngredients) {
@@ -49,12 +50,13 @@ function searchRecipes() {
     apiUrl += `&cuisineType=${cuisineType}`;
   }
 
+  // Reset current page and current results
   currentPage = 0;
   currentResults = [];
 
+  // Fetch initial results
   fetchResults(apiUrl);
 }
-
 
 function fetchResults(apiUrl) {
   fetch(apiUrl)
@@ -72,21 +74,35 @@ function fetchResults(apiUrl) {
 }
 
 function loadMoreResults() {
+  // Increment current page
   currentPage++;
+
+  // Calculate start and end indexes of next page of results
   const startIndex = currentPage * resultsPerPage;
   const endIndex = (currentPage + 1) * resultsPerPage;
+
+  // Check if there are more results to display
+  if (startIndex >= currentResults.length) {
+    loadMoreBtn.style.display = 'none';
+    return;
+  }
+
+  // Slice current results to get next page of results
   const nextResults = currentResults.slice(startIndex, endIndex);
+
+  // Display next page of results
   displayResults(nextResults);
 }
 
 function displayResults(results) {
+  // If current page is 0, clear the results list
   if (currentPage === 0) {
     resultsList.innerHTML = '';
   }
 
+  // Loop through results and create HTML elements to display each result
   results.forEach(result => {
     const { recipe } = result;
-    // Add an additional check for undefined `recipe`
     if (!recipe) {
       return;
     }
@@ -97,19 +113,31 @@ function displayResults(results) {
     const img = document.createElement('img');
     img.src = image;
 
-    const div = document.createElement('div');
-    div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? ingredients.length : 'Unknown'} ingredients</p>`;
+    const h3 = document.createElement('h3');
+    const a = document.createElement('a');
+    a.href = ${url};
+    a.target = '_blank';
+    a.innerText = label;
+    const ul = document.createElement('ul');
+ingredients.forEach(ingredient => {
+  const li = document.createElement('li');
+  li.innerText = ingredient.text;
+  ul.appendChild(li);
+});
 
-    li.appendChild(img);
-    li.appendChild(div);
+li.appendChild(img);
+li.appendChild(h3);
+h3.appendChild(a);
+li.appendChild(ul);
 
-    resultsList.appendChild(li);
-  });
+resultsList.appendChild(li);
+
+    });
 }
 
-function displayError(errorMessage) {
-  const errorDiv = document.getElementById('error-message');
-  errorDiv.innerHTML = errorMessage;
-  resultsList.innerHTML = '';
-  loadMoreBtn.style.display = 'none';
+function displayError(message) {
+const errorDiv = document.getElementById('error-message');
+errorDiv.innerHTML = message;
+resultsList.innerHTML = '';
+loadMoreBtn.style.display = 'none';
 }
