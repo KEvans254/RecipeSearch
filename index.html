@@ -1,36 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Recipe Search</title>
-	<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Recipe Search</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div class="container">
-		<h1>Recipe Search</h1>
-		<div class="search-container">
-			<input type="text" id="query" placeholder="Search for recipes...">
-			<button id="search-btn">Search</button>
-			<div id="error-message"></div>
-			<div id="filters">
-				<label>Exclude Ingredients:</label>
-				<input type="text" id="excludeIngredients" placeholder="e.g. dairy, nuts">
-				<label>Diet:</label>
-				<select id="diet">
-					<option value="">Any</option>
-					<option value="balanced">Balanced</option>
-					<option value="high-protein">High Protein</option>
-					<option value="low-fat">Low Fat</option>
-					<option value="low-carb">Low Carb</option>
-				</select>
-				<label>Cuisine Type:</label>
-				<input type="text" id="cuisineType" placeholder="e.g. italian, mexican">
-			</div>
-		</div>
-		<div class="results-container">
-			<ul id="results"></ul>
-			<div id="pagination"></div>
-		</div>
-	</div>
-	<script src="script.js"></script>
+  <h1>Recipe Search</h1>
+  <div id="search-container">
+    <input type="text" id="query" placeholder="Enter search query">
+    <input type="text" id="excludeIngredients" placeholder="e.g. dairy, nuts (optional)">
+    <select id="diet">
+      <option value="">Select diet</option>
+      <option value="balanced">Balanced</option>
+      <option value="high-protein">High Protein</option>
+      <option value="low-fat">Low Fat</option>
+      <option value="low-carb">Low Carb</option>
+    </select>
+    <select id="cuisineType">
+      <option value="">Select cuisine type</option>
+      <option value="american">American</option>
+      <option value="asian">Asian</option>
+      <option value="british">British</option>
+      <option value="caribbean">Caribbean</option>
+      <option value="central-european">Central European</option>
+      <option value="chinese">Chinese</option>
+      <option value="eastern-european">Eastern European</option>
+      <option value="french">French</option>
+      <option value="indian">Indian</option>
+      <option value="italian">Italian</option>
+      <option value="japanese">Japanese</option>
+      <option value="kosher">Kosher</option>
+      <option value="mediterranean">Mediterranean</option>
+      <option value="mexican">Mexican</option>
+      <option value="middle-eastern">Middle Eastern</option>
+      <option value="nordic">Nordic</option>
+      <option value="south-american">South American</option>
+      <option value="south-east-asian">South East Asian</option>
+    </select>
+    <button id="search-btn">Search</button>
+    <div id="error-message"></div>
+  </div>
+  <ul id="results"></ul>
+  <button id="load-more">Load more</button>
+  <script src="app.js"></script>
 </body>
 </html>
