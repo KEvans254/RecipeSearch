@@ -60,4 +60,18 @@ function displayResults(hits) {
       const img = document.createElement('img');
       img.src = image;
 
-      const div =
+      const div = document.createElement('div');
+      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? ingredients.length : 'Unknown'} ingredients</p>`;
+
+      li.appendChild(img);
+      li.appendChild(div);
+
+      results.appendChild(li);
+    });
+  }
+}
+
+function displayError(errorMessage) {
+  const errorDiv = document.getElementById('error-message');
+  errorDiv.innerHTML = errorMessage;
+}
