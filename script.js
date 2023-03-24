@@ -11,6 +11,10 @@ function searchRecipes() {
   const diet = document.getElementById('diet').value;
   const cuisineType = document.getElementById('cuisineType').value;
 
+  // Clear error message
+  const errorDiv = document.getElementById('error-message');
+  errorDiv.innerHTML = '';
+
   // Check if required fields are filled
   if (!query) {
     displayError('Please enter a search query');
