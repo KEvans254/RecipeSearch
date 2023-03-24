@@ -1,142 +1,60 @@
-const appId = '7cc1191d';
-const appKey = '408b5ba93e0d384e5fd58fcbcd65f649';
+const APP_ID = '7cc1191d';
+const APP_KEY = '408b5ba93e0d384e5fd58fcbcd65f649';
+const searchForm = document.querySelector('form');
+const searchButton = document.querySelector('#search-button');
+const loadMoreButton = document.querySelector('#load-more');
+const resultsList = document.querySelector('#results');
+const errorMessage = document.querySelector('#error-message');
+let searchStart = 0;
+let searchEnd = 12;
 
-const searchBtn = document.getElementById('search-button');
-searchBtn.addEventListener('click', searchRecipes);
-
-let currentPage = 0;
-const resultsPerPage = 10;
-let currentResults = [];
-
-const resultsList = document.getElementById('results');
-const loadMoreBtn = document.getElementById('load-more');
-
-loadMoreBtn.addEventListener('click', loadMoreResults);
-
-function searchRecipes() {
-  const query = document.getElementById('query').value.trim(); // remove leading/trailing whitespace
-  const excludeIngredients = document.getElementById('excludeIngredients').value.trim();
-  const diet = document.getElementById('diet').value;
-  const cuisineType = document.getElementById('cuisineType').value;
-
-  // Clear error message
-  const errorDiv = document.getElementById('error-message');
-  errorDiv.innerHTML = '';
-
-  // Check if required fields are filled
+searchForm.addEventListener('submit', event => {
+  event.preventDefault();
+  searchStart = 0;
+  searchEnd = 12;
+  resultsList.innerHTML = '';
+  errorMessage.innerHTML = '';
+  const query = document.querySelector('#query').value;
+  const excludeIngredients = document.querySelector('#excludeIngredients').value;
+  const diet = document.querySelector('#diet').value;
+  const cuisineType = document.querySelector('#cuisineType').value;
   if (!query) {
-    displayError('Please enter a search query');
-    return;
+    errorMessage.innerHTML = '<p>Please enter a search query.</p>';
+  } else {
+    searchRecipes(query, excludeIngredients, diet, cuisineType, searchStart, searchEnd);
+    loadMoreButton.style.display = 'inline';
   }
+});
 
-  // Validate excludeIngredients input
-  if (excludeIngredients && !/^[A-Za-z ]+$/.test(excludeIngredients)) {
-    displayError('Exclude ingredients should only contain letters and spaces');
-    return;
-  }
+loadMoreButton.addEventListener('click', () => {
+  searchStart += 12;
+  searchEnd += 12;
+  const query = document.querySelector('#query').value;
+  const excludeIngredients = document.querySelector('#excludeIngredients').value;
+  const diet = document.querySelector('#diet').value;
+  const cuisineType = document.querySelector('#cuisineType').value;
+  searchRecipes(query, excludeIngredients, diet, cuisineType, searchStart, searchEnd);
+});
 
-  // Build API URL
-  let apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
-
-  if (excludeIngredients) {
-    apiUrl += `&excluded=${excludeIngredients}`;
-  }
-
-  if (diet) {
-    apiUrl += `&diet=${diet}`;
-  }
-
-  if (cuisineType) {
-    apiUrl += `&cuisineType=${cuisineType}`;
-  }
-
-  // Reset current page and current results
-  currentPage = 0;
-  currentResults = [];
-
-  // Fetch initial results
-  fetchResults(apiUrl);
-}
-
-function fetchResults(apiUrl) {
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => {
-      currentResults = data.hits;
-      displayResults(currentResults.slice(0, resultsPerPage));
-      if (currentResults.length > resultsPerPage) {
-        loadMoreBtn.style.display = 'block';
-      } else {
-        loadMoreBtn.style.display = 'none';
-      }
-    })
-    .catch(error => displayError(error));
-}
-
-function loadMoreResults() {
-  // Increment current page
-  currentPage++;
-
-  // Calculate start and end indexes of next page of results
-  const startIndex = currentPage * resultsPerPage;
-  const endIndex = (currentPage + 1) * resultsPerPage;
-
-  // Check if there are more results to display
-  if (startIndex >= currentResults.length) {
-    loadMoreBtn.style.display = 'none';
-    return;
-  }
-
-  // Slice current results to get next page of results
-  const nextResults = currentResults.slice(startIndex, endIndex);
-
-  // Display next page of results
-  displayResults(nextResults);
-}
-
-function displayResults(results) {
-  // If current page is 0, clear the results list
-  if (currentPage === 0) {
-    resultsList.innerHTML = '';
-  }
-
-  // Loop through results and create HTML elements to display each result
-  results.forEach(result => {
-    const { recipe } = result;
-    if (!recipe) {
-      return;
+async function searchRecipes(query, excludeIngredients, diet, cuisineType, from, to) {
+  let url = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}&excluded=${excludeIngredients}&diet=${diet}&cuisineType=${cuisineType}&from=${from}&to=${to}`;
+  const response = await fetch(url);
+  if (response.ok) {
+    const data = await response.json();
+    if (data.hits.length === 0) {
+      errorMessage.innerHTML = '<p>No results found. Please try another search query.</p>';
+    } else {
+      data.hits.forEach(hit => {
+        const recipe = hit.recipe;
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = recipe.url;
+        link.textContent = recipe.label;
+        listItem.appendChild(link);
+        resultsList.appendChild(listItem);
+      });
     }
-
-    const { label, image, url, ingredients } = recipe;
-
-    const li = document.createElement('li');
-    const img = document.createElement('img');
-    img.src = image;
-
-    const h3 = document.createElement('h3');
-    const a = document.createElement('a');
-    a.href = url; // corrected
-    a.target = '_blank';
-    a.innerText = label;
-    const ul = document.createElement('ul');
-    ingredients.forEach(ingredient => {
-      const li = document.createElement('li');
-      li.innerText = ingredient.text;
-      ul.appendChild(li);
-    });
-
-    li.appendChild(img);
-    li.appendChild(h3);
-    h3.appendChild(a);
-    li.appendChild(ul);
-
-    resultsList.appendChild(li);
-  });
-}
-
-function displayError(message) {
-    const errorDiv = document.getElementById('error-message');
-    errorDiv.innerHTML = message;
-    resultsList.innerHTML = '';
-    loadMoreBtn.style.display = 'none';
+  } else {
+    errorMessage.innerHTML = '<p>Something went wrong. Please try again later.</p>';
+  }
 }
