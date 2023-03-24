@@ -63,7 +63,6 @@ function displayResults(hits) {
 
       const div = document.createElement('div');
       div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients?.length || 0} ingredients</p>`;
-
       
       li.appendChild(img);
       li.appendChild(div);
