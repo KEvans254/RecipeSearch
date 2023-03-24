@@ -4,7 +4,6 @@ This is a web application that allows users to search for recipes based on vario
 ## Features
 - Search for recipes by entering keywords and filters
 - View recipes with details such as ingredients, cooking instructions, and nutritional information
-- Pagination to navigate through multiple pages of search results
 
 ## Technologies Used
 - HTML5
@@ -27,7 +26,9 @@ To use the application, follow these steps:
 1. Enter a search query and select any desired filters (e.g. include ingredients, exclude ingredients, diet, cuisine type).
 1. Click the "Search" button to fetch recipe results from the Edamam API.
 1. View the search results and click on any recipe to view its details.
-1. Use the pagination buttons to navigate through multiple pages of search results.
+
+## To be added
+1. Pagination
 
 ## License
 This project is licensed under the MIT License. 
