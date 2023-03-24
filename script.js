@@ -1,60 +1,77 @@
-const APP_ID = '7cc1191d';
-const APP_KEY = '408b5ba93e0d384e5fd58fcbcd65f649';
-const searchForm = document.querySelector('form');
-const searchButton = document.querySelector('#search-button');
-const loadMoreButton = document.querySelector('#load-more');
-const resultsList = document.querySelector('#results');
-const errorMessage = document.querySelector('#error-message');
-let searchStart = 0;
-let searchEnd = 12;
+const appId = '7cc1191d';
+const appKey = '408b5ba93e0d384e5fd58fcbcd65f649';
 
-searchForm.addEventListener('submit', event => {
-  event.preventDefault();
-  searchStart = 0;
-  searchEnd = 12;
-  resultsList.innerHTML = '';
-  errorMessage.innerHTML = '';
-  const query = document.querySelector('#query').value;
-  const excludeIngredients = document.querySelector('#excludeIngredients').value;
-  const diet = document.querySelector('#diet').value;
-  const cuisineType = document.querySelector('#cuisineType').value;
+const searchBtn = document.getElementById('search-btn');
+searchBtn.addEventListener('click', searchRecipes);
+
+function searchRecipes() {
+  const query = document.getElementById('query').value;
+  const excludeIngredients = document.getElementById('excludeIngredients').value;
+  const diet = document.getElementById('diet').value;
+  const cuisineType = document.getElementById('cuisineType').value;
+
+  // Clear error message
+  const errorDiv = document.getElementById('error-message');
+  errorDiv.innerHTML = '';
+
+  // Check if required fields are filled
   if (!query) {
-    errorMessage.innerHTML = '<p>Please enter a search query.</p>';
-  } else {
-    searchRecipes(query, excludeIngredients, diet, cuisineType, searchStart, searchEnd);
-    loadMoreButton.style.display = 'inline';
+    displayError('Please enter a search query');
+    return;
   }
-});
 
-loadMoreButton.addEventListener('click', () => {
-  searchStart += 12;
-  searchEnd += 12;
-  const query = document.querySelector('#query').value;
-  const excludeIngredients = document.querySelector('#excludeIngredients').value;
-  const diet = document.querySelector('#diet').value;
-  const cuisineType = document.querySelector('#cuisineType').value;
-  searchRecipes(query, excludeIngredients, diet, cuisineType, searchStart, searchEnd);
-});
+  let apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
 
-async function searchRecipes(query, excludeIngredients, diet, cuisineType, from, to) {
-  let url = `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}&excluded=${excludeIngredients}&diet=${diet}&cuisineType=${cuisineType}&from=${from}&to=${to}`;
-  const response = await fetch(url);
-  if (response.ok) {
-    const data = await response.json();
-    if (data.hits.length === 0) {
-      errorMessage.innerHTML = '<p>No results found. Please try another search query.</p>';
-    } else {
-      data.hits.forEach(hit => {
-        const recipe = hit.recipe;
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = recipe.url;
-        link.textContent = recipe.label;
-        listItem.appendChild(link);
-        resultsList.appendChild(listItem);
-      });
-    }
-  } else {
-    errorMessage.innerHTML = '<p>Something went wrong. Please try again later.</p>';
+  if (excludeIngredients && excludeIngredients.trim() !== '') { // check if excludeIngredients is not empty or undefined
+    apiUrl += `&excluded=${excludeIngredients}`;
   }
+
+  if (diet) {
+    apiUrl += `&diet=${diet}`;
+  }
+
+  if (cuisineType) {
+    apiUrl += `&cuisineType=${cuisineType}`;
+  }
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => displayResults(data.hits))
+    .catch(error => displayError(error));
+}
+
+function displayResults(hits) {
+  const results = document.getElementById('results');
+  results.innerHTML = '';
+
+  if (hits.length === 0) {
+    const errorMessage = 'No results found. Please try another search.';
+    displayError(errorMessage);
+  } else {
+    hits.forEach(hit => {
+      const { recipe } = hit;
+        // Add an additional check for undefined `recipe`
+      if (!recipe) {
+        return;
+      }
+      const { label, image, url, ingredients } = recipe;
+
+      const li = document.createElement('li');
+      const img = document.createElement('img');
+      img.src = image;
+
+      const div = document.createElement('div');
+      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? ingredients.length : 'Unknown'} ingredients</p>`;
+
+      li.appendChild(img);
+      li.appendChild(div);
+
+      results.appendChild(li);
+    });
+  }
+}
+
+function displayError(errorMessage) {
+  const errorDiv = document.getElementById('error-message');
+  errorDiv.innerHTML = errorMessage;
 }
