@@ -38,11 +38,22 @@
       <option value="south-american">South American</option>
       <option value="south-east-asian">South East Asian</option>
     </select>
-    <button id="search-btn">Search</button>
-    <div id="error-message"></div>
+    <button id="search-button">Search</button>
   </div>
-  <ul id="results"></ul>
-  <button id="load-more">Load more</button>
-  <script src="app.js"></script>
+  <div class="container">
+    <div class="filters">
+      <label for="sort">Sort by:</label>
+      <select id="sort">
+        <option value="relevance">Relevance</option>
+        <option value="healthiness">Healthiness</option>
+        <option value="time">Time</option>
+      </select>
+    </div>
+    <div class="results-container">
+      <ul class="results-list"></ul>
+      <div class="pagination"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
