@@ -50,7 +50,7 @@ function displayResults(hits) {
   } else {
     hits.forEach(hit => {
       const { recipe } = hit;
-        // Add an additional check for undefined `recipe`
+      // Add an additional check for undefined `recipe`
       if (!recipe) {
         return;
       }
@@ -61,7 +61,7 @@ function displayResults(hits) {
       img.src = image;
 
       const div = document.createElement('div');
-      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><p>${ingredients ? ingredients.length : 'Unknown'} ingredients</p>`;
+      div.innerHTML = `<h2><a href="${url}" target="_blank">${label}</a></h2><ul>${ingredients.map(ingredient => `<li>${ingredient.text}</li>`).join('')}</ul>`;
 
       li.appendChild(img);
       li.appendChild(div);
@@ -70,6 +70,7 @@ function displayResults(hits) {
     });
   }
 }
+
 
 function displayError(errorMessage) {
   const errorDiv = document.getElementById('error-message');
