@@ -11,7 +11,7 @@ function searchRecipes() {
   const diet = document.getElementById('diet').value;
   const cuisineType = document.getElementById('cuisineType').value;
 
-  const apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}&`;
+  const apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
 
   if (includeIngredients) {
     apiUrl += `&ingr=${includeIngredients}`;
