@@ -4,110 +4,147 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
 
 /* Global styles */
-* {
-  box-sizing: border-box;
-}
 
+{
+box-sizing: border-box;
+}
 body {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  background-color: #f9f9f9;
+font-family: 'Open Sans', sans-serif;
+font-size: 16px;
+color: #333;
+margin: 0;
+padding: 0;
+background-color: #f9f9f9;
 }
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+max-width: 800px;
+margin: 0 auto;
+padding: 20px;
 }
 
 h1 {
-  text-align: center;
+text-align: center;
+font-size: 2.5rem;
+margin-bottom: 2rem;
 }
 
 .search-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+margin-bottom: 2rem;
 }
 
 input[type="text"], select {
-  padding: 5px;
-  margin-right: 10px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
+padding: 1rem;
+margin-right: 1rem;
+border: 2px solid #ccc;
+border-radius: 5px;
+font-size: 1rem;
 }
 
 input[type="text"]:focus, select:focus {
-  outline: none;
-  border-color: #0077cc;
+outline: none;
+border-color: #0077cc;
 }
 
 button {
-  padding: 5px 10px;
-  background-color: #0077cc;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
+padding: 1rem;
+background-color: #0077cc;
+color: #fff;
+border: none;
+border-radius: 3px;
+cursor: pointer;
+font-size: 1rem;
 }
 
 button:hover {
-  background-color: #005fa3;
+background-color: #005fa3;
+}
+
+label {
+font-size: 1rem;
+margin-right: 1rem;
 }
 
 #excludeIngredients, #diet, #cuisineType {
-  width: 200px;
+width: 200px;
 }
 
 .results-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
 }
 
 li {
-  position: relative; /* Add position relative to the li element */
-  width: 48%;
-  margin-bottom: 20px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+position: relative;
+width: 48%;
+margin-bottom: 2rem;
+box-shadow: 0 0 5px rgba(0,0,0,0.2);
+border-radius: 5px;
+overflow: hidden;
 }
 
 li::before {
-  position: absolute; /* Position the pseudo-element relative to the li element */
-  content: '\2022'; /* Use the Unicode character for a bullet point */
-  font-size: 20px;
-  left: -20px; /* Position the icon to the left of the li element */
-  top: 50%; /* Vertically center the icon */
-  transform: translateY(-50%); /* Adjust the vertical position of the icon */
+position: absolute;
+content: '\2022';
+font-size: 2rem;
+left: -2rem;
+top: 50%;
+transform: translateY(-50%);
+color: #0077cc;
 }
 
 li img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+width: 100%;
+height: auto;
+object-fit: cover;
 }
 
 li div {
-  padding: 10px;
+padding: 2rem;
 }
 
 li h2 {
-  margin: 0 0 10px;
-  font-size: 20px;
+margin: 0 0 1rem;
+font-size: 1.5rem;
+color: #0077cc;
 }
 
 li p {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
+margin: 0;
+font-size: 1.2rem;
+font-weight: 600;
+color: #555;
 }
 
 li ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+margin: 0;
+padding: 0;
+list-style: none;
+}
+
+#error-message {
+font-size: 1rem;
+color: #ff0000;
+margin-top: 1rem;
+}
+
+#pagination {
+display: flex;
+justify-content: center;
+margin-top: 2rem;
+}
+
+.pagination-link {
+padding: 0.5rem;
+margin: 0 0.5rem;
+border: 1px solid #0077cc;
+border-radius: 5px;
+color: #0077cc;
+font-size: 1rem;
+text-decoration: none;
+transition: background-color 0.2s ease-in-out;
 }
