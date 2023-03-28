@@ -180,3 +180,7 @@ a:hover {
 .pagination a:not(.disabled) {
   text-decoration: none;
 }
+
+.error-message {
+  color: red;
+}
